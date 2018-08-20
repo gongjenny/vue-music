@@ -1,17 +1,23 @@
 <template>
   <div id="app">
-    hello world
+    <m-header></m-header>
+    <!--router.js配置好路由之后，在main.js中引入router，在页面上使用router渲染的组件 -->
+    <tab></tab>
+    <router-view></router-view> 
   </div>
-</template>
+</template> 
 
 <script>
+// import MHeader from './components/m-header/m-header' 这样写找相对路径
+import MHeader from 'components/m-header/m-header'  //这样写是用的配置的别名
+import Tab from 'components/tab/tab'
 export default {
-  name: 'App'
+  components:{
+      MHeader,
+      Tab
+  }
 }
 </script>
 
 <style scoped lang='stylus' rel='stylesheet/stylus'>
-@import '~common/stylus/variable'
-#app
-   color:$color-theme
 </style>
