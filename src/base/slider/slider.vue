@@ -5,7 +5,7 @@
       </slot>
     </div>
     <div class="dots">
-     
+      <span class="dot" v-for="(item,index) in dots" :key="index" :class="{active:currentPageIndex === index}"></span>
     </div>
   </div>
 </template>
@@ -14,6 +14,12 @@
 import BScroll from  'better-scroll'
 import {addClass} from 'common/js/dom'
 export default{
+    data(){
+        return{
+            dots:[],
+            currentPageIndex: 0
+        }
+    },
     props:{
         loop:{
             type:Boolean,
@@ -33,13 +39,14 @@ export default{
         //保证dom 成功渲染的话，一般都要加上延时，浏览器的刷新一般都是17ms一次
         setTimeout(()=>{
             this._setSliderWidth();
+            this._initDots();
             this._initSlider();
         },20)
     },
-    methods:{ 
+    methods:{
         _setSliderWidth(){
-            this.children = this.$refs.sliderGroup.children
-
+            this.children = this.$refs.sliderGroup.children //sliderGroup的直接子元素
+            //console.log(this.children);
             let width = 0
             let silderWidth = this.$refs.slider.clientWidth
             for(let i=0;i<this.children.length;i++){
@@ -53,6 +60,9 @@ export default{
             }
             this.$refs.sliderGroup.style.width = width + 'px'
         },
+        _initDots(){
+            this.dots = new Array(this.children.length)
+        },
         _initSlider(){
             this.slider = new BScroll(this.$refs.slider,{
                 scrollX:true,
@@ -63,9 +73,15 @@ export default{
                 snapThreshold: 0.3,
                 snapSpeed:400,
                 click:true
-                
             })
-        },
+            this.slider.on('scrollEnd',() => {
+                let pageIndex = this.slider.getCurrentPage().pageX
+                if(this.loop){
+                    pageIndex -= 1
+                }
+                this.currentPageIndex = pageIndex
+            })
+        }
     }
 
 }
