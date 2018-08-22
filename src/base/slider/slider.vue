@@ -43,9 +43,16 @@ export default{
             this._initSlider();
             this._play();
         },20)
+        window.addEventListener('resize',()=>{
+            if(!this.slider){
+                return
+            }
+            this._setSliderWidth(true);
+            this.slider.refresh();
+        })
     },
     methods:{
-        _setSliderWidth(){
+        _setSliderWidth(isResize){
             this.children = this.$refs.sliderGroup.children //sliderGroup的直接子元素
             //console.log(this.children);
             let width = 0
@@ -56,7 +63,7 @@ export default{
                 child.style.width = silderWidth + 'px'
                 width += silderWidth
             }
-            if(this.loop){
+            if(this.loop && !isResize){
                 width += 2 * silderWidth
             }
             this.$refs.sliderGroup.style.width = width + 'px'
@@ -72,8 +79,7 @@ export default{
                 snap: true,
                 snapLoop: this.loop,
                 snapThreshold: 0.3,
-                snapSpeed:400,
-                click:true
+                snapSpeed:400
             })
             this.slider.on('scrollEnd',() => {
                 console.log(this.slider);
@@ -97,6 +103,9 @@ export default{
                 this.slider.goToPage(pageIndex,0,400);
             },this.interval)
         }
+    },
+    destroyed(){
+        clearTimeout(this.timer)
     }
 
 }

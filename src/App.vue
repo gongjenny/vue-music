@@ -3,7 +3,10 @@
     <m-header></m-header>
     <!--router.js配置好路由之后，在main.js中引入router，在页面上使用router渲染的组件 -->
     <tab></tab>
-    <router-view></router-view> 
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
+    
   </div>
 </template> 
 
