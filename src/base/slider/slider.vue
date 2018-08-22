@@ -41,6 +41,7 @@ export default{
             this._setSliderWidth();
             this._initDots();
             this._initSlider();
+            this._play();
         },20)
     },
     methods:{
@@ -75,12 +76,26 @@ export default{
                 click:true
             })
             this.slider.on('scrollEnd',() => {
+                console.log(this.slider);
                 let pageIndex = this.slider.getCurrentPage().pageX
                 if(this.loop){
                     pageIndex -= 1
                 }
-                this.currentPageIndex = pageIndex
+                this.currentPageIndex = pageIndex;
+                if(this.autoPlay){
+                    clearTimeout(this.timer);
+                    this._play();
+                }
             })
+        },
+        _play(){
+            let pageIndex = this.currentPageIndex + 1;
+            if(this.loop){
+                pageIndex += 1;
+            }
+            this.timer = setTimeout(()=>{
+                this.slider.goToPage(pageIndex,0,400);
+            },this.interval)
         }
     }
 
