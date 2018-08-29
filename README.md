@@ -10,3 +10,10 @@ git commit -m "first commit"
 git remote add origin git@github.com:gongjenny/vue-music.git
 git push -u origin master
 ```
+## slot 插槽
+非具名插槽：父组件的内容，去填充子组件的slot
+## 推荐页面代理顺序
+使用的是jsonp 的代理方式
+```
+recommend.vue --> 当前页面js中getRecommend() --> 去recommend.js中找到getRecommend() 函数 --> 里面return了一个jsonp(url, data, options)函数  --> 去common/js/jsonp.js 中找jsonp() 函数，里面用到了promise 构造函数，成功时调用relove(data)，data是调取成功后返回的数据，then() 函数可以获取到data并使用。
+```

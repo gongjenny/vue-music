@@ -1,8 +1,7 @@
 <template>
   <div class="slider" ref="slider">
     <div  class="slider-group" ref="sliderGroup">
-      <slot>
-      </slot>
+      <slot></slot>
     </div>
     <div class="dots">
       <span class="dot" v-for="(item,index) in dots" :key="index" :class="{active:currentPageIndex === index}"></span>
@@ -82,7 +81,7 @@ export default{
                 snapSpeed:400
             })
             this.slider.on('scrollEnd',() => {
-                console.log(this.slider);
+                //console.log(this.slider);
                 let pageIndex = this.slider.getCurrentPage().pageX
                 if(this.loop){
                     pageIndex -= 1
