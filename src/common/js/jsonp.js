@@ -1,13 +1,14 @@
 import originJSONP from 'jsonp'
 
 export default function jsonp(url, data, option){
-//console.log(data);
+
  url += (url.indexOf('?') < 0 ? '?' : '&') + param(data)
  return new Promise((resolve, reject) => {
      //这个data和上边传进来的data不是一个 data
      originJSONP(url,option,(err,data) => {
          if(!err){
             resolve(data) //执行之后回调的数据存在data里面，当成参数传入到then()函数中
+            //console.log(data);
          }else{
             reject(err)
          }

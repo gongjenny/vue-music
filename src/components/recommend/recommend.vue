@@ -8,7 +8,8 @@
             <slider v-if='recommends.length'>
               <div v-for="item in recommends" :key='item.id'>
                 <a :href="item.linkUrl">
-                  <img @load='loadImg' :src="item.picUrl" alt="">
+                  <!--加上fastclick里面的needsclick类名，是为了解决 fastclick 和 better-scroll 点击事件冲突，导致图片点击失效的问题 -->
+                  <img class="needsclick" @load='loadImg' :src="item.picUrl" alt="">
                 </a>
               </div>
             </slider>
@@ -18,7 +19,7 @@
             <ul>
               <li v-for="(item,index) in discList" :key="index"  class="item">
                 <div class="icon">
-                  <img width="60" height="60" :src="item.imgurl" alt="">
+                  <img width="60" height="60" v-lazy="item.imgurl" alt="">
                 </div>
                 <div class="text">
                   <h2 class="name" v-html="item.creator.name"></h2>
@@ -28,6 +29,9 @@
             </ul>
           </div>
         </div>
+        <div class="loading-container" v-show="!discList.length">
+          <loading></loading>
+        </div>
       </scroll>
   </div>
 </template>
@@ -35,6 +39,7 @@
 // 引入scorll 组件，下面注册一下scroll，即可在模板中使用
 import Scroll from "base/scroll/scroll"
 import Slider from "base/slider/slider"
+import Loading from 'base/loading/loading'
 import { getRecommend, getDiscList } from "api/recommend";
 import { ERR_OK } from "api/config";
 export default {
@@ -45,13 +50,13 @@ export default {
     };
   },
   created() {
-      this._getRecommend();
-    this._getDiscList();
+       this._getRecommend();
+       this._getDiscList();
   },
   methods: {
     _getRecommend() {
       getRecommend().then((res) => {
-        console.log(res);
+        //console.log(res);
         if (res.code === ERR_OK) {
           this.recommends = res.data.slider;
         }
@@ -77,7 +82,8 @@ export default {
   },
   components: {
     Slider,
-    Scroll
+    Scroll,
+    Loading
   }
 };
 </script>
@@ -146,7 +152,7 @@ export default {
       position: absolute;
       width: 100%;
       top: 50%;
-      transform: translateY(-50%);
+      transform: translateY(-50%)
     }
   }
 }
