@@ -22,10 +22,8 @@ export default {
   methods:{
     _getSingerList(){
       getSingerList().then((res)=>{
-        //console.log(res)
         if(res.code == ERR_OK){
           this.singers = this._normalizeSinger(res.data.list)
-          console.log(this.singers)
         }
       })
     },
@@ -38,9 +36,7 @@ export default {
         } 
       }
       list.forEach((item,index)  => {
-         
         if(index < HOT_SINGER_LEN){
-          console.log(1);
           map.hot.items.push(new Singer({
             id: item.Fsinger_mid,
             name: item.Fsinger_name
@@ -59,7 +55,6 @@ export default {
           }))
       })
       //为了得到有序列表， 我们需要处理 map
-      console.log(map);
       let  hot = []
       let ret = []
       for(let key in map){
